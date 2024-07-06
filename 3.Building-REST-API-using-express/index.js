@@ -6,7 +6,20 @@ const app = express();
 const PORT = 8000;
 
 //Middleware - Pluggin
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: false}));  //getting data from front-end and form it into objectss
+
+app.use((req, res, next) => {   //next is pointing our route
+    console.log("hi from middleware 1");
+    fs.appendFile('log.txt', '${Date.now}: ${req.method}', (err, data)=>{
+      next();   
+    });
+   
+})
+    // middleware 1 will allow it to go to m-2 and 2 will allow to go to routes
+app.use((req, res, next) => {   
+    console.log("hi from middleware 2");
+    next();
+})
 
 // sending json as html
 // app.get("/users", (req, res) =>{
