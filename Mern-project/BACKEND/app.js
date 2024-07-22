@@ -23,9 +23,8 @@ const productSchema = mongoose.Schema({
 const Product = mongoose.model('Product', productSchema);  // Creating a Mongoose model based on the schema
 
 // Route to handle GET requests for products
-app.get(api + '/products', (req, res) => {
-    const productList = Product.find();
-    // console.log(product);  // Logging the product object
+app.get(api + '/products', async (req, res) => {
+    const productList = await Product.find();
     res.send(productList);  // Sending the product object as the response
 });
 
