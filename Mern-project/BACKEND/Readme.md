@@ -5,3 +5,4 @@ Packages installed
 4. npm install dotenv
 5. npm install morgan
 6. npm install mongoose
+7. npm install cors
