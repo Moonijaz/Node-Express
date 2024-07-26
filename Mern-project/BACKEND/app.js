@@ -10,23 +10,20 @@ app.options('*', cors());
 
 const api = process.env.API_URL;
 
-//Middleware
+// Middleware
 app.use(express.json());
 app.use(morgan('tiny'));
 
-//Routers
-const categoriesRoutes = require("./routes/categories");
-const productsRoutes = require("./routes/products");
-// const usersRoutes = require("./routes/users");
-// const ordersRoutes = require("./routes/orders");
+// Routers
+const categoriesRoutes = require('./routes/categories');
+const productsRoutes = require('./routes/products');
+const usersRoutes = require('./routes/users');
+const ordersRoutes = require('./routes/orders');
 
-
-app.use(api+ `/categories`, categoriesRoutes);
-app.use(api+ `/products`, productsRoutes);
-// app.use(api+ `/users`, usersRoutes);
-// app.use(api+ `/orders`, ordersRoutes);
-
-
+app.use(api + '/categories', categoriesRoutes);
+app.use(api + '/products', productsRoutes);
+app.use(api + '/users', usersRoutes);
+app.use(api + '/orders', ordersRoutes);
 
 mongoose.connect('mongodb://localhost:27017/eshop-database')
     .then(() => {
