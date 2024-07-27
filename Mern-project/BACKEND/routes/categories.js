@@ -1,14 +1,14 @@
-const express = require('express'); // Importing Express library
-const router = express.Router(); // Creating an Express router
-const Category = require('../models/category'); // Importing the Category model
+const express = require('express'); 
+const router = express.Router(); 
+const Category = require('../models/category'); 
 
 // Route to handle GET requests for categories
 router.get('/', async (req, res) => {
     try {
-        const categoryList = await Category.find(); // Fetch all categories
-        res.send(categoryList); // Send the list of categories as the response
+        const categoryList = await Category.find(); 
+        res.send(categoryList); 
     } catch (error) {
-        res.status(500).json({ success: false, error }); // Handle errors
+        res.status(500).json({ success: false, error }); 
     }
 });
 
@@ -16,15 +16,28 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         let category = new Category({
-            name: req.body.name, // Category name from the request body
-            icon: req.body.icon, // Category icon from the request body
-            color: req.body.color // Category color from the request body
+            name: req.body.name, 
+            icon: req.body.icon, 
+            color: req.body.color 
         });
-        category = await category.save(); // Save the new category to the database
-        res.send(category); // Send the created category as the response
+        category = await category.save(); 
+        res.send(category); 
     } catch (error) {
-        res.status(404).send('The category cannot be created'); // Handle errors
+        res.status(404).send('The category cannot be created'); 
     }
 });
 
-module.exports = router; // Exporting the router to use in other parts of the application
+// Route to handle DELETE requests for deleting a category by ID
+router.delete('/:id', (req, res) => {
+    Category.findByIdAndDelete(req.params.id).then(category => {
+        if (category) {
+            return res.status(200).json({ success: true, message: 'The category is deleted!' });
+        } else {
+            return res.status(404).json({ success: false, message: 'Category not found' });
+        }
+    }).catch(err => {
+        return res.status(400).json({ success: false, error: err });
+    });
+});
+
+module.exports = router;

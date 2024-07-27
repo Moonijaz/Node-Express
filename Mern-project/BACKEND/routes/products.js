@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
         countInStock: req.body.countInStock
     });
 
-    product.save()
+    product .save()
         .then((createdProduct) => {
             res.status(201).json(createdProduct);
         })
