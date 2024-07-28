@@ -4,13 +4,36 @@ const Category = require('../models/category');
 
 // Route to handle GET requests for categories
 router.get('/', async (req, res) => {
-    try {
         const categoryList = await Category.find(); 
         res.send(categoryList); 
-    } catch (error) {
-        res.status(500).json({ success: false, error }); 
-    }
 });
+
+
+router.get('/:id', async (req, res) => {
+        const category = await Category.findById(req.params.id); 
+        if (!category) {
+            return res.status(200).json({message: 'The category with the given ID was not found' });
+        } 
+        res.status(200).send(category);
+});
+
+
+router.put('/:id', async (req, res) => {
+        const category = await Category.findByIdAndUpdate(req.params.id,
+            {
+                name: req.body.name, 
+                icon: req.body.icon, 
+                color: req.body.color                 
+            },
+            {new : true}
+        ); 
+        if (!category) {
+            return res.status(200).json({message: 'The category with the given ID was not found' });
+        } 
+        res.status(200).send(category);
+});
+
+
 
 // Route to handle POST requests for creating a new category
 router.post('/', async (req, res) => {
