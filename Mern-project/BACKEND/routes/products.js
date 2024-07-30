@@ -90,7 +90,17 @@ router.get('/get/count', async (req, res) => {
     if (!productCount) {
         return res.status(200).json({message: 'The product with the given ID was not found' });
     } 
-    res.status(200).send({ productCount : productCount});
+    res.status(200).send({productCount});
+});
+
+
+router.get('/get/featured/:count', async (req, res) => {
+    const count = req.params.count ? req.params.count : 0 
+    const products = await Product.find({isFeatured: true}).limit(count); 
+    if (!products) {
+        return res.status(200).json({success: false });
+    } 
+    res.status(200).send({products});
 });
 
 
