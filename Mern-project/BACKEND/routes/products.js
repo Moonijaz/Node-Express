@@ -85,5 +85,13 @@ router.delete('/:id', (req, res) => {
     });
 });
 
+router.get('/get/count', async (req, res) => {
+    const productCount = await Product.countDocuments(); 
+    if (!productCount) {
+        return res.status(200).json({message: 'The product with the given ID was not found' });
+    } 
+    res.status(200).send({ productCount : productCount});
+});
+
 
 module.exports = router;
