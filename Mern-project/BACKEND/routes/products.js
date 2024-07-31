@@ -4,15 +4,15 @@ const Product = require('../models/products');
 const Category = require('../models/category');
 const mongoose = require("mongoose");
 
-router.get('/', async (req, res) => {
-    const productList = await Product.find();
-    res.send(productList);
-});
+// router.get('/', async (req, res) => {
+//     const productList = await Product.find();
+//     res.send(productList);
+// });
 
 router.get('/:id', async (req, res) => {
     const product = await Product.findById(req.params.id).populate("category"); 
     if (!product) {
-        return res.status(200).json({message: 'The product with the given ID was not found' });
+        return res.status(200).json({success: false });
     } 
     res.status(200).send(product);
 });
@@ -103,5 +103,16 @@ router.get('/get/featured/:count', async (req, res) => {
     res.status(200).send({products});
 });
 
+// router.get('/', async (req, res) => {
+//     let filter = {};
+//     if(req.query.categories){
+//       filter = req.query.categories.split(',')
+//     }
+//     const productList = await Product.find(filter).populate("category"); 
+//     if (!productList) {
+//         return res.status(200).json({success: false });
+//     } 
+//     res.status(200).send(productList);
+// });
 
 module.exports = router;
