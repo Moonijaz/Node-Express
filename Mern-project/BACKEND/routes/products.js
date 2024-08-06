@@ -103,16 +103,19 @@ router.get('/get/featured/:count', async (req, res) => {
     res.status(200).send({products});
 });
 
-// router.get('/', async (req, res) => {
-//     let filter = {};
-//     if(req.query.categories){
-//       filter = req.query.categories.split(',')
-//     }
-//     const productList = await Product.find(filter).populate("category"); 
-//     if (!productList) {
-//         return res.status(200).json({success: false });
-//     } 
-//     res.status(200).send(productList);
-// });
+
+//localhost:4000/api/v1/products?category=bategory-id-1,category-id-2
+router.get('/', async (req, res) => {
+    let filter = {};
+    if(req.query.categories)
+    {
+      filter = {category: req.query.categories.split(',')}
+    }
+    const productList = await Product.find(filter).populate("category"); 
+    if (!productList) {
+        return res.status(200).json({success: false });
+    } 
+    res.status(200).send(productList);
+});
 
 module.exports = router;
