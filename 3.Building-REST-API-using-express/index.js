@@ -1,6 +1,6 @@
 const express = require("express");
 const users = require("./MOCK_DATA.json");
-const fs = require("fs");
+const fs = require("fs"); //for file handling 
 
 const app = express();
 const PORT = 8000;
@@ -10,7 +10,7 @@ app.use(express.urlencoded({extended: false}));  //getting data from front-end a
 
 app.use((req, res, next) => {   //next is pointing our route
     console.log("hi from middleware 1");
-    fs.appendFile('log.txt', '${Date.now}: ${req.method}', (err, data)=>{
+    fs.appendFile('log.txt', `${Date.now()}: ${req.method}: ${req.path} \n`, (err, data)=>{
       next();   
     });
    
@@ -21,19 +21,25 @@ app.use((req, res, next) => {
     next();
 })
 
-// sending json as html
-// app.get("/users", (req, res) =>{
-//     const html = "<ul>${users.map((user) => '<li>$
-//     {users.first_name}</li>')}</ul>";
-//     res.send(html);
-// });
+
+//API's
+
+// sending json as html , SERVER SIDE RENDERING
+app.get("/users", (req, res) =>{
+    const html = `
+    <ul>
+        ${users.map((user) => `<li> ${user.first_name}</li>`).join('')}
+    </ul>
+    `
+    res.send(html);
+});
 
 //getting data as json
 app.get("/api/users", (req, res) =>{
     return res.json(users);
 });
 
-//getting data as id
+//getting data as id (DYNAMIC PATH PARAMETERS)
 app.get("/api/users/:id", (req, res) =>{
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
@@ -43,11 +49,11 @@ app.get("/api/users/:id", (req, res) =>{
 app.post("/api/users", (req, res) =>{   //using postman to check req, this will add new users in json file on localhost
     //TODO : Create a nerw user
     const body = req.body;
-    users.push({...body, id: users.length +1});
+    users.push({...body, id: users.length +1}); //(...body) => append body in user file
     fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) =>{
      return res.json({status : "success", id: users.length });    
     })
-   
+   console.log(body);
 });
 
 app.patch("/api/users/:id", (req, res) =>{

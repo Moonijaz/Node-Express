@@ -1,1 +1,4 @@
-${Date.now}: ${req.method}
+${Date.now}: ${req.method}${Date.now}: ${req.method}${Date.now}: ${req.method}${Date.now}: ${req.method}function now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: POSTfunction now() { [native code] }: POSTfunction now() { [native code] }: GETfunction now() { [native code] }: GETfunction now() { [native code] }: POSTfunction now() { [native code] }: GETfunction now() { [native code] }: POSTfunction now() { [native code] }: GET1729083757432: GET: /api/users/1004ln1729083843727: GET: /api/users/167 /ln1729083902460: GET: /api/users/189 
+1729083916956: GET: /api/users/90 
+1729083922628: GET: /api/users/98 
+1729083927273: GET: /api/users 
