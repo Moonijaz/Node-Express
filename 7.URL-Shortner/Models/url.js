@@ -6,27 +6,24 @@ const urlSchema = new mongoose.Schema(
     {
         // Unique identifier for the shortened URL
         shortId: {
-            type: String, // Data type is String
-            required: true, // This field is mandatory
-            unique: true, // This field must be unique across all documents
+            type: String, 
+            required: true, 
+            unique: true, 
         },
-        // Original URL that the short ID redirects to
         redirectURL: {
-            type: String, // Data type is String
-            required: true, // This field is mandatory
+            type: String,
+            required: true
         },
-        // Array to store the history of visits to the shortened URL
         visitHistory: [
             { 
-                timestamp: { type: Number } // Each visit records a timestamp
+                timestamp: { type: Number } 
             }
         ],
     },
-    { timestamps: true } // Automatically manage createdAt and updatedAt fields
+    { timestamps: true } 
 );
 
 // Create a Mongoose model for the URL schema
 const URL = mongoose.model("URL", urlSchema);
 
-// Export the URL model for use in other parts of the application
 module.exports = URL;
