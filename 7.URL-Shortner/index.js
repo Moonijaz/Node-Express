@@ -2,9 +2,11 @@
 const express = require("express");
 const path = require("path")
 const { connectToMondoDB } = require("./connect");
+
+const URL = require("./Models/url");
 const urlRoutes = require("./Routes/url");
 const staticRoute = require('./Routes/staticRouter');
-const URL = require("./Models/url");
+const userRoute = require("./Routes/user");
 
 const app = express();
 const PORT = 8001;
@@ -21,9 +23,11 @@ app.set('views', path.resolve("./views"));
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use("/url", urlRoutes); // Routes
 
+app.use("/url", urlRoutes); // Routes
 app.use("/", staticRoute);
+app.use("/user", userRoute);
+
 
 // Redirect route for shortId
 app.get("/:shortId", async (req, res) => {

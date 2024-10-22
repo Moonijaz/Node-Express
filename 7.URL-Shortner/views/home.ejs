@@ -16,31 +16,24 @@
         <input type="text" name="url" placeholder="http://example.com">
         <button type="submit">Generate</button>   
         </form>
-
     </div>
-    <% if (urls && urls.length > 0) { %>
-        <table>
-            <thead>
-                <tr>
-                    <th>Sr. No</th>
-                    <th>ShortId</th>
-                    <th>Redirect</th>
-                    <th>Clicks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% urls.forEach((url, index) => { %>
-                    <tr>
-                        <td><%= index + 1 %></td>
-                        <td><%= url.shortId %></td>
-                        <td><%= url.redirectURL %></td>
-                        <td><%= url.visitHistory.length %></td>
-                    </tr>
-                <% }) %>
-            </tbody>
-        </table>
-    <% } else { %>
-        <p>No URLs found.</p>
+    <% if (locals.url) { %>
+     <table>
+        <thead>
+            <th>Sr. No</th>
+            <th>ShortId</th>
+            <th>Redirect</th>
+            <th>Clicks</th>
+        </thead>
+        <tbody>
+            <% urls.forEach(url, index => { %>
+             <td>index +1</td>
+             <td>url.shortId</td>
+             <td>url.redirectURL</td>
+             <td>url.visitHistory.length</td>
+            <% }) %>
+        </tbody>
+     </table>
     <% } %>
     
 </body>
