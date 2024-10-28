@@ -16,8 +16,9 @@ async function handleGenerateNewUrl(req, res) {
     // Create a new entry in the URL collection
     await URL.create({
         shortId: shortID, // Assign the generated short ID
-        redirectURL: body.url, // Store the original URL
-        visitHistory: [], // Initialize an empty array for visit history
+        redirectURL: body.url, 
+        createdBy: req.user._id,
+        visitHistory: [], 
     });
 
     // Respond with the generated short ID

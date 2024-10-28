@@ -1,33 +1,40 @@
-
 const express = require("express");
-const path = require("path")
-const { connectToMondoDB } = require("./connect");
-
+const path = require("path");
+const mongoose = require("mongoose"); // moved mongoose import here
+const cookieParser = require('cookie-parser');
+const { restrictToLoggedInUserOnly, checkAuth } = require("./middleware/auth");
 const URL = require("./Models/url");
 const urlRoutes = require("./Routes/url");
 const staticRoute = require('./Routes/staticRouter');
 const userRoute = require("./Routes/user");
 
 const app = express();
-const PORT = 8001;
+const PORT = process.env.PORT || 8001;
+
+// MongoDB connection function
+async function connectToMongoDB(url) {
+    try {
+        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        console.log("MongoDB connected");
+    } catch (error) {
+        console.error("MongoDB connection failed:", error);
+    }
+}
 
 // Connect to MongoDB
-connectToMondoDB("mongodb://localhost:27017/url")
-    .then(() => console.log("MongoDB connected"))
-    .catch((err) => console.error("MongoDB connection failed:", err));
+connectToMongoDB("mongodb://localhost:27017/url");
 
-// Use middleware
-app.set("view engine", "ejs"); // for server side rendering
-app.set('views', path.resolve("./views"));
-
-
+// Set up middleware and view engine
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
-app.use("/url", urlRoutes); // Routes
+// Define routes
+app.use("/url", restrictToLoggedInUserOnly, urlRoutes);
 app.use("/", staticRoute);
-app.use("/user", userRoute);
-
+app.use("/user", checkAuth, userRoute);
 
 // Redirect route for shortId
 app.get("/:shortId", async (req, res) => {
@@ -38,7 +45,7 @@ app.get("/:shortId", async (req, res) => {
         const entry = await URL.findOneAndUpdate(
             { shortId },
             { $push: { visitHistory: { timestamp: Date.now() } } },
-            { new: true } // Ensure updated entry is returned
+            { new: true }
         );
 
         // Handle the case where no entry is found
