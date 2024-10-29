@@ -4,7 +4,7 @@ const mongoose = require("mongoose"); // moved mongoose import here
 const cookieParser = require('cookie-parser');
 const { restrictToLoggedInUserOnly, checkAuth } = require("./middleware/auth");
 const URL = require("./Models/url");
-const urlRoutes = require("./Routes/url");
+const urlRoute = require("./Routes/url");
 const staticRoute = require('./Routes/staticRouter');
 const userRoute = require("./Routes/user");
 
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8001;
 // MongoDB connection function
 async function connectToMongoDB(url) {
     try {
-        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(url);
         console.log("MongoDB connected");
     } catch (error) {
         console.error("MongoDB connection failed:", error);
@@ -32,9 +32,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Define routes
-app.use("/url", restrictToLoggedInUserOnly, urlRoutes);
-app.use("/", staticRoute);
-app.use("/user", checkAuth, userRoute);
+app.use("/url", restrictToLoggedInUserOnly, urlRoute);
+app.use("/user", userRoute);
+app.use("/", checkAuth, staticRoute);
 
 // Redirect route for shortId
 app.get("/:shortId", async (req, res) => {
